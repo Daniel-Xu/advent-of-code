@@ -1,0 +1,2 @@
+defmodule AdventOfCode do
+end
