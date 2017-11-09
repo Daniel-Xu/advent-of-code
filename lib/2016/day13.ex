@@ -4,66 +4,50 @@ defmodule Day13 do
 
   @fav 1364
 
-  def search(%{x: x, y: y}), do: search(x, y)
-  def search(x, y) do
+  def search(x, y, fun) do
     {:ok, coordinate} = Coordinate.new(1, 1)
     :queue.from_list([coordinate])
-    |> process(%{x: x, y: y}, MapSet.new([]), false, %{})
-    |> calc("#{x},#{y}", 0)
+    |> process(%{x: x, y: y}, MapSet.new([]), false, %{"1,1" => 0}, fun)
   end
 
-  def calc(nil, _, _acc), do: nil
-  def calc(_history, "1,1", acc), do: acc
-  def calc(history, key, acc) do
-    key =
-      Map.get(history, key)
-      |> Coordinate.to_key()
-
-    calc(history, key, acc + 1)
+  def part_one() do
+    search(31, 39, fn(item, x, y, _) -> destination?(item, x, y) end)
+    |> elem(0)
+    |> Map.get("31,39")
   end
 
-  def create_coordinates() do
-    for x <- 0..50, y <- 0..50 - x do
-      {:ok, item} = Coordinate.new(x, y)
-      item
-    end
-  end
-
-  def number() do
-    create_coordinates()
-    |> Enum.filter(&open?/1)
-    |> Enum.filter(fn(x) ->
-      case search(x) do
-        nil -> false
-        n -> n <= 50
-      end
+  def part_two() do
+    search(50, 50, fn(item, _, _, distance) ->
+      Map.get(distance, Coordinate.to_key(item)) > 50
     end)
+    |> elem(1)
     |> Enum.count
+    |> Kernel.-(1)
   end
 
   @doc """
   BFS
   """
-  def process(_queue, _destination, _visited, stop, pre) when stop == true, do: pre
-  def process({[], []}, _destination, _visited, _stop, _pre), do: nil
-  def process(queue, %{x: x, y: y} = destination, visited, _stop, pre) do
+  def process(_queue, _destination, visited, stop, distance, _fun) when stop == true, do: {distance, visited}
+  def process({[], []}, _destination, _visited, _stop, _distance, _fun), do: nil
+  def process(queue, %{x: x, y: y} = destination, visited, _stop, distance, fun) do
     {{:value, item}, queue} = :queue.out(queue)
     visited = MapSet.put(visited, item)
-    {queue, stop, pre} =
-      case destination?(item, x, y) do
+    {queue, stop, distance} =
+      case fun.(item, x, y, distance) do
         true ->
-          {queue, true, pre}
+          {queue, true, distance}
         false ->
-          {new_queue, new_pre} =
-            adjacent_queue(item, visited)
-            |> in_adjacent(item, queue, pre)
-          {new_queue, false, new_pre}
+          {new_queue, new_distance} =
+            adjacent_nodes(item, visited)
+            |> in_adjacent(item, queue, distance)
+          {new_queue, false, new_distance}
       end
 
-    process(queue, destination, visited, stop, pre)
+    process(queue, destination, visited, stop, distance, fun)
   end
 
-  def adjacent_queue(%{x: x, y: y}, visited) do
+  def adjacent_nodes(%{x: x, y: y}, visited) do
     [Coordinate.new(x, y - 1), Coordinate.new(x, y + 1), Coordinate.new(x + 1, y), Coordinate.new(x - 1, y)]
     |> Enum.filter(fn(element) ->
       case element do
@@ -75,9 +59,10 @@ defmodule Day13 do
     |> Enum.map(&elem(&1, 1))
   end
 
-  def in_adjacent(adjacent, item, queue, pre) do
-    Enum.reduce(adjacent, {queue, pre}, fn(x, {queue, pre}) ->
-      {:queue.in(x, queue), Map.put(pre, Coordinate.to_key(x), item)}
+  def in_adjacent(adjacent, item, queue, distance) do
+    steps = Map.get(distance, Coordinate.to_key(item)) + 1
+    Enum.reduce(adjacent, {queue, distance}, fn(x, {queue, distance}) ->
+      {:queue.in(x, queue), Map.put(distance, Coordinate.to_key(x), steps)}
     end)
   end
 
