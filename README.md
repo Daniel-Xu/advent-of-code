@@ -1,21 +1,17 @@
 # AdventOfCode
 
-**TODO: Add description**
+## 2016
 
-## Installation
+Skill required to solve AOC 2016:
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `advent_of_code` to your list of dependencies in `mix.exs`:
+1. BFS is the king (or you can use A *)
+2. Binary pattern matching
+3. recursive thinking
+4. bit operation
+5. File operation (Stream)
+6. Regex
+7. Some erlang data structures (mostly `:queue`)
 
-```elixir
-def deps do
-  [
-    {:advent_of_code, "~> 0.1.0"}
-  ]
-end
-```
+## 2017
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/advent_of_code](https://hexdocs.pm/advent_of_code).
-
+WIP
