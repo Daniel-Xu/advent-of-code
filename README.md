@@ -43,3 +43,5 @@ Key point for each problem
 5. Use `%{}` not `[]` for the `O(1)` happiness
 
 6. `List.update_at`, `List.replace_at` and `MapSet.member?`
+
+7. DFS
