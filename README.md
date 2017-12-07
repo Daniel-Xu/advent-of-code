@@ -14,4 +14,32 @@ Skill required to solve AOC 2016:
 
 ## 2017
 
-WIP
+Key point for each problem
+
+1. For wrap around, you will want to use `rem(i, len)`
+
+2. `Enum.max`, `Enum.min` or `Enum.min_max`
+
+3. Learn the spiral move, this is so important.
+
+```
+  Odd: right: 1, up: n, left: n
+  17  16  15  14  13
+  18   5   *   *  12
+  19   6   * > *  11
+  20   7   8   9  10
+  21  22  23---> ...
+
+  Even: left: 1, down: n, right: n
+  17  16  15  14  13
+  18   ^ < 4   3  12
+  19   ^   1   2  11
+  20   ^   ^   ^  10
+  21  22  23---> ...
+```
+
+4. `(String.codepoints or String.split) |> Enum.sort()`
+
+5. Use `%{}` not `[]` for the `O(1)` happiness
+
+6. `List.update_at`, `List.replace_at` and `MapSet.member?`
