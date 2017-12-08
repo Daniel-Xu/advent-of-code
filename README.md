@@ -45,3 +45,5 @@ Key point for each problem
 6. `List.update_at`, `List.replace_at` and `MapSet.member?`
 
 7. DFS
+
+8. `String.split(s, " if ")`
