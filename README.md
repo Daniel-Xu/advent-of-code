@@ -46,4 +46,6 @@ Key point for each problem
 
 7. DFS
 
-8. `String.split(s, " if ")`
+8. `String.split(s, " ")`
+
+9. `Regex.scan`
