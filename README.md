@@ -49,3 +49,18 @@ Key point for each problem
 8. `String.split(s, " ")`
 
 9. `Regex.scan`
+
+10. List rotate left/right (`Enum.split`)
+```elixir
+  defp rotate_left(l, n) do
+    len = Enum.count(l)
+    {h, t} = Enum.split(l, rem(n, len))
+    t ++ h
+  end
+
+  defp rotate_right(l, n) do
+    len = Enum.count(l)
+    {h, t} = Enum.split(l, rem(len - n, len))
+    t ++ h
+  end
+```
