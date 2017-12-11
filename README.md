@@ -64,3 +64,5 @@ Key point for each problem
     t ++ h
   end
 ```
+
+11. Hex grid: `{x, y} => {x (+/-) 0.5 or 1, y (+/-) 0.5 or 1}`
