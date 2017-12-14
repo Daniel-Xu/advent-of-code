@@ -4,7 +4,7 @@ defmodule AOC17.Day10 do
   @size 256
 
   def handle(), do: String.split(@input, ",") |> Enum.map(&String.to_integer/1)
-  def handle_s(), do: (for << x <- @input>>, do: x) ++ [17, 31, 73, 47, 23]
+  def handle_s(i \\ @input), do: (for << x <- i>>, do: x) ++ [17, 31, 73, 47, 23]
 
   def part_one() do
     Enum.to_list(0..255)
@@ -12,9 +12,9 @@ defmodule AOC17.Day10 do
     |> Enum.reduce(&Kernel.*/2)
   end
 
-  def part_two() do
+  def part_two(i) do
     l = Enum.to_list(0..255)
-    input = handle_s()
+    input = handle_s(i)
 
     {_, _, l} =
       Stream.scan(1..64, {0, 0, l}, fn(_n, {c, s, l}) ->
@@ -37,8 +37,8 @@ defmodule AOC17.Day10 do
   reverse
   rotate back
   """
-  def process(l, _len, [], _c, _s), do: Enum.slice(l, 0..1) #for part_one
-  # def process(l, _len, [], c, s), do: {c, s, l}
+  # def process(l, _len, [], _c, _s), do: Enum.slice(l, 0..1) #for part_one
+  def process(l, _len, [], c, s), do: {c, s, l}
   def process(l, len, [0 | i_t], c, s), do: process(l, len, i_t, rem(c + s, len), s + 1)
   def process(l, len, [i_h | i_t], c, s) do
     step = len - c

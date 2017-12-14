@@ -16,7 +16,7 @@ defmodule AOC17.Day12 do
     |> Enum.reduce(m, fn(n, m) ->
       if MapSet.member?(m, n),
         do: m,
-        else: process(l, n, m) |> MapSet.union(m)
+        else: process(l, n, m)
     end)
   end
 
