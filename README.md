@@ -72,3 +72,5 @@ Key point for each problem
 13. Each cycle will have `(range - 1) * 2` number of elements
 
 14. DFS
+
+15. `mask = (1 <<< len) - 1` to generate `len` number of 1 mask
