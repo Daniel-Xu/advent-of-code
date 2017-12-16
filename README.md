@@ -74,3 +74,5 @@ Key point for each problem
 14. DFS
 
 15. `mask = (1 <<< len) - 1` to generate `len` number of 1 mask
+
+16. 1 billion times is impossible (find cycyle)
