@@ -76,3 +76,5 @@ Key point for each problem
 15. `mask = (1 <<< len) - 1` to generate `len` number of 1 mask
 
 16. 1 billion times is impossible (find cycyle)
+
+17. Similar with Day1, wrap around: `rem(i, len)`
