@@ -80,3 +80,15 @@ Key point for each problem
 17. Similar with Day1, wrap around: `rem(i, len)`
 
 18. Run two `Map` together: `process([p0, p0_i], [p1, p1_1])`
+
+19. Convert List to Map:
+```elixir
+[[1, 2], [3, 4]]
+
+# to
+
+%{
+  0 => %{0 => 1, 1 => 2}
+  1 => %{0 => 3, 1 => 4}
+}
+```
