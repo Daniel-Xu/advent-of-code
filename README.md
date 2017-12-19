@@ -78,3 +78,5 @@ Key point for each problem
 16. 1 billion times is impossible (find cycyle)
 
 17. Similar with Day1, wrap around: `rem(i, len)`
+
+18. Run two `Map` together: `process([p0, p0_i], [p1, p1_1])`
