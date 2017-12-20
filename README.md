@@ -92,3 +92,5 @@ Key point for each problem
   1 => %{0 => 3, 1 => 4}
 }
 ```
+
+20. `%{ m | 0 => "new value" }` and `Enum.uniq_by`
