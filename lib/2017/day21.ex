@@ -4,43 +4,76 @@ defmodule AOC17.Day21 do
   def load(name \\ "data/2017/day21.txt")  do
     normalize_file(name, " => ")
     |> Enum.reduce(%{}, fn([k, v], m) ->
-      permutation(k) |> Enum.reduce(m, fn(p, m) -> Map.put(m, p, v) end)
+      permutation(k) |> Enum.reduce(m, fn(x, m) -> Map.put(m, x, v) end)
     end)
   end
 
-  def run(n) do
+  def run() do
     input = ".#./..#/###"
     book = load()
 
-    process(input, book, n, 0)
+    process(input, matrix_size(input), book, 0)
   end
 
-  def process(str, book, 18, res), do: res
-  def process(str, book, n, acc) do
-    if matrix_size(str) == 4 do
-      children = divide_4(str)
-      |> Enum.reduce(0, fn(c_str, acc) ->
-        acc + process(c_str, book, n, 0)
-      end)
-    else
-      pattern = find_pattern(str, book)
-      acc = Regex.replace(~r/\.|\//, pattern, "") |> byte_size()
+  # 8.658 total for part_two
+  def process(str, _size, _book, 18), do: str |> cal()
+  def process(str, size, book, acc) when size > 2 and rem(size, 2) == 0 do
+    str = expand(str, book, 2)
+    process(str, matrix_size(str), book, acc + 1)
+  end
+  def process(str, size, book, acc) when size > 3 and rem(size, 3) == 0 do
+    str = expand(str, book, 3)
+    process(str, matrix_size(str), book, acc + 1)
+  end
+  def process(str, _size, book, acc) do
+    str = Map.get(book, str)
+    process(str, matrix_size(str), book, acc + 1)
+  end
 
-      process(pattern, book, n + 1, acc)
-    end
+  def expand(str, book, n) do
+    chunk(str, n)
+    |> Enum.map(&Map.get(book, &1))
+    |> combine(div(matrix_size(str), n))
+  end
+
+  @doc """
+  iex> AOC17.Day21.cal("#../#..#")
+  3
+  """
+  def cal(str), do: String.replace(str, ~r/[^#]/, "") |> byte_size()
+
+  @doc """
+  iex(46)> m = ["123456", "123456", "123456", "123456", "123456", "123456"] |> Enum.join("/")
+  iex(47)> AOC17.Day21.chunk(m, 2)
+  ["12/12", "34/34", "56/56", "12/12", "34/34", "56/56", "12/12", "34/34",
+  "56/56"]
+  """
+  def chunk(str, n) do
+    String.split(str, "/")
+    |> Enum.chunk_every(n)
+    |> Enum.flat_map(fn(x) ->
+      Enum.map(x, fn(str) ->
+        for <<x::binary-size(n) <- str>>, do: x
+      end) |> transpose() |> Enum.map(&Enum.join(&1, "/"))
+    end)
+  end
+
+  @doc """
+  iex(47)> m =  ["123/456/789", "abc/def/ghi", "123/456/789", "111/222/333"]
+  iex(46)> AOC17.Day21.combine(m, 2)
+  "123abc/456def/789ghi/123111/456222/789333"
+  """
+  def combine(l, n) do
+    Enum.chunk_every(l, n)
+    |> Enum.flat_map(fn(x) ->
+      Enum.map(x, &String.split(&1, "/"))
+      |> transpose()
+      |> Enum.map(&Enum.join(&1, ""))
+    end)
+    |>Enum.join("/")
   end
 
   def matrix_size(str), do: Regex.run(~r/.*?(?=\/)/, str) |> hd() |> byte_size()
-
-  def divide_4(str) do
-    Regex.replace(~r/(.{2})(.{2})\/(.{2})(.{2})\/(.{2})(.{2})\/(.{2})(.{2})/, str, "\\1\\3/\\2\\4/\\5\\7/\\6\\8")
-    |> String.split("/", trim: true)
-    |> Enum.map(fn(l) ->
-      String.split(l, "", trim: true)
-      |> Enum.chunk_every(2)
-    end)
-    |> Enum.map(&to_str/1)
-  end
 
   def flip_x(matrix), do: Enum.reverse(matrix)
   def flip_y(matrix), do: for x <- matrix, do: Enum.reverse(x)
@@ -58,8 +91,6 @@ defmodule AOC17.Day21 do
     String.split(str, "/")
     |> Enum.map(&String.split(&1, "", trim: true))
   end
-
-  def find_pattern(str, book), do: Map.get(book, str)
 
   def permutation(str) do
     matrix = to_matrix(str)

@@ -96,5 +96,16 @@ Key point for each problem
 20. `%{ m | 0 => "new value" }` and `Enum.uniq_by`
 
 21. Matrix Rotate, Flip, Transpose
+```
+def transpose(matrix) do
+  List.zip(matrix) |> Enum.map(&Tuple.to_list/1)
+end
+
+def flip_x(matrix), do: Enum.reverse(matrix)
+
+def flip_y(matrix), do: for x <- matrix, do: Enum.reverse(x)
+
+def rotate(matrix), do: transpose(matrix) |> flip_y()
+```
 
 22. Using `{dx, dy}` to control direction
