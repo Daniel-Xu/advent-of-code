@@ -94,3 +94,7 @@ Key point for each problem
 ```
 
 20. `%{ m | 0 => "new value" }` and `Enum.uniq_by`
+
+21. Matrix Rotate, Flip, Transpose
+
+22. Using `{dx, dy}` to control direction
