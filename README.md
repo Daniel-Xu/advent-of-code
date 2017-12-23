@@ -109,3 +109,12 @@ def rotate(matrix), do: transpose(matrix) |> flip_y()
 ```
 
 22. Using `{dx, dy}` to control direction
+
+23. How to check if N is prime number
+```elixir
+defp prime_n?(x) do
+  Enum.reduce_while(2..div(x, 2), true, fn(d, acc) ->
+    if rem(x, d) == 0, do: {:halt, false}, else: {:cont, acc}
+  end)
+end
+```
