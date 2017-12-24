@@ -79,7 +79,7 @@ Key point for each problem
 
 17. Similar with Day1, wrap around: `rem(i, len)`
 
-18. Run two `Map` together: `process([p0, p0_i], [p1, p1_1])`
+18. Run two `Map` together: `process([p0, p0_i], [p1, p1_i])`
 
 19. Convert List to Map:
 ```elixir
@@ -96,7 +96,7 @@ Key point for each problem
 20. `%{ m | 0 => "new value" }` and `Enum.uniq_by`
 
 21. Matrix Rotate, Flip, Transpose
-```
+```elixir
 def transpose(matrix) do
   List.zip(matrix) |> Enum.map(&Tuple.to_list/1)
 end
