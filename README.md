@@ -118,3 +118,5 @@ defp prime_n?(x) do
   end)
 end
 ```
+
+24. DFS
