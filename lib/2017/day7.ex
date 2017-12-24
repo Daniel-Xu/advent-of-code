@@ -2,12 +2,25 @@ defmodule AOC17.Day7 do
   use Utils
 
   def part_one(name \\ "data/2017/day7.txt")  do
+    g = :digraph.new()
     s = normalize_file(name, "-> ")
-    total = Enum.map(s, &elem(&1, 0))
-    children = Enum.reduce(s, [], fn({_, _, c}, acc) ->
-      c ++ acc
-    end)
-    (total -- children) |> hd()
+
+    for {name, _, children} <- s, c <- children do
+      :digraph.add_vertex(g, name)
+      :digraph.add_vertex(g, c)
+      :digraph.add_edge(g, name, c)
+    end
+
+    {:yes, root} = :digraph_utils.arborescence_root(g)
+    root
+
+    # normal solution
+    # s = normalize_file(name, "-> ")
+    # total = Enum.map(s, &elem(&1, 0))
+    # children = Enum.reduce(s, [], fn({_, _, c}, acc) ->
+    #   c ++ acc
+    # end)
+    # (total -- children) |> hd()
   end
 
   @doc """
